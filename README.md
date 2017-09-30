@@ -1,6 +1,6 @@
 # Redes
 ### Prácticas de la asignatura de redes
-#### Práctica 1.
+#### Práctica 1. Programación de aplicaciones sobre TCP/IP
 
 Se pide diseñar un servidor UDP que implemente un servicio similar al proporcionado por
 daytime, así como un cliente que haga uso de su servicio. Como el servicio que ofrece UDP es
