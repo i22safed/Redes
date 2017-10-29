@@ -10,6 +10,10 @@
 
 int main(){
 
+     struct timeval timeout;
+     timeout.tv_sec = 5;
+	   timeout.tv_usec = 0;
+     fd_set descriptor;
 
      int Socket_Cliente;
      int Servicio;
@@ -17,7 +21,7 @@ int main(){
      struct sockaddr_in Servidor;
      socklen_t Longitud_Servidor;
 
-     Socket_Cliente = socket (AF_INET, SOCK_DGRAM, 0);
+     Socket_Cliente = socket(AF_INET, SOCK_DGRAM, 0);
 
      if (Socket_Cliente == -1){
           printf ("No se puede abrir el socket cliente\n");
@@ -31,37 +35,57 @@ int main(){
      Longitud_Servidor = sizeof(Servidor);
 
      printf("\nIntroduzca el servicio para la respuesta del servidor");
-     printf("\n1. DAY → Fecha formato Dia, DD de MES de 201X");
+     printf("\n\n1. DAY → Fecha formato Dia, DD de MES de 201X");
      printf("\n2. TIME → Hora formato HH:MM:SS");
      printf("\n3. DAYTIME → DAY + TIME");
-     printf("\nServicio: ");
+     printf("\n\nServicio: ");
      scanf("%i",&Servicio);
+
+     FD_ZERO(&descriptor);
+     FD_SET(Socket_Cliente,&descriptor);
 
      // Datagrama
      int enviado = sendto (Socket_Cliente, (char *) &Servicio, sizeof(Servicio), 0,
      (struct sockaddr *) &Servidor, Longitud_Servidor);
 
-
      if (enviado < 0){
           printf("Error al solicitar el servicio\n");
      }else{
-          int recibido = recvfrom (Socket_Cliente,fecha, sizeof(fecha), 0,
-          (struct sockaddr *) &Servidor, &Longitud_Servidor);
 
-     if (recibido > 0){
-          printf ("Leido, servicio numero %i %s\n",Servicio,fecha);
-     }else{
-          printf ("Error al leer del servidor\n");
+          int salida = select(Socket_Cliente+1,&descriptor,NULL,NULL,&timeout);
+
+          if(salida == -1){
+
+               printf("Se ha producido un error en select\n");
+               close(Socket_Cliente);
+               return -1;
+
+          }else{
+
+               if(salida == 0){
+                            printf("Se ha agotado el tiempo\n");
+                            close(Socket_Cliente);
+                            return -1;
+               }else{
+
+                    int recibido = recvfrom (Socket_Cliente,fecha, sizeof(fecha), 0,
+                    (struct sockaddr *) &Servidor, &Longitud_Servidor);
+
+                    if (recibido > 0){
+                         printf ("Leido, servicio numero %i %s\n",Servicio,fecha);
+                         close(Socket_Cliente);
+                         return 0;
+                    }else{
+                         printf ("Error al leer del servidor\n");
+                         close(Socket_Cliente);
+                         return -1;
+                    }
+
+               }
+          }
      }
 
-     // Cierre del socket
      close(Socket_Cliente);
-     return 0;
-     }
+     return -1;
+
 }
-/*
-
-INFO → https://es.wikibooks.org/wiki/Programaci%C3%B3n_en_C/Sockets
-cd code/Redes/practica1
-
-*/

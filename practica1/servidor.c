@@ -33,6 +33,11 @@ int main(){
      Servidor.sin_port = htons(2000);
      Servidor.sin_addr.s_addr = htonl(INADDR_ANY);
 
+     // En caso de acabar el proceso de los socket con Ctrl + C, permitir
+     // reutilizar la direccion
+     int activado = 1;
+     setsockopt(Socket_Servidor, SOL_SOCKET, SO_REUSEADDR, &activado, sizeof(activado));
+
      if (bind (Socket_Servidor, (struct sockaddr *)&Servidor, sizeof (Servidor)) == -1){
           close (Socket_Servidor);
           exit (-1);
@@ -62,10 +67,8 @@ int main(){
                          strftime(formato,80,"%A, %d de %B de %Y; %H:%M:%S", stTm);
                     }
 
-
                     int enviado = sendto (Socket_Servidor, &formato, sizeof(formato), 0,
                     (struct sockaddr *) &Cliente, Longitud_Cliente);
-
 
                }
           }
