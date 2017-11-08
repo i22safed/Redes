@@ -17,4 +17,15 @@ El servicio admitirá la siguiente especificación de los paquetes:
 
   - **DAYTIME**: paquete para solicitar tanto el día como la hora de la maquina remota. La salida será con el siguiente formato: ```Lunes, 29 de Septiembre de 2014; 16:00:00.```
 
-  ![](https://img.shields.io/badge/Practica%201%20-0%25-red.svg)
+  ![](https://img.shields.io/badge/Practica%201-100%25-green.svg)
+
+#### Práctica 2. Hundir la flota
+
+La comunicación entre los clientes del juego de hundir la flota se realizará bajo el
+protocolo de transporte ```TCP```. La práctica que se propone consiste en la realización de una
+aplicación cliente/servidor que implemente el juego con las restricciones comentadas
+anteriormente. En el juego considerado los jugadores (los clientes) se conectan al servicio (el
+servidor). Solamente se admitirán partidas con dos jugadores y se admitirá un máximo de 10
+partidas simultáneas.
+
+  ![](https://img.shields.io/badge/Practica%202-0%25-red.svg)
