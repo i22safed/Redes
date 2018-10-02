@@ -17,7 +17,7 @@ El servicio admitirá la siguiente especificación de los paquetes:
 
   - **DAYTIME**: paquete para solicitar tanto el día como la hora de la maquina remota. La salida será con el siguiente formato: ```Lunes, 29 de Septiembre de 2014; 16:00:00.```
 
-  ![](https://img.shields.io/badge/Practica%201-100%25-green.svg)
+  ![](https://img.shields.io/badge/Practica%201-0%25-green.svg)
 
 #### Práctica 2. Hundir la flota
 
