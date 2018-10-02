@@ -17,7 +17,7 @@ El servicio admitirá la siguiente especificación de los paquetes:
 
   - **DAYTIME**: paquete para solicitar tanto el día como la hora de la maquina remota. La salida será con el siguiente formato: ```Lunes, 29 de Septiembre de 2014; 16:00:00.```
 
-  ![](https://img.shields.io/badge/Practica%201-0%25-grey.svg)
+  ![](https://img.shields.io/badge/Practica%201-0%25-lightgray.svg)
 
 #### Práctica 2. El Buscaminas
 
@@ -27,4 +27,4 @@ ese contacto con ese recuadro, o una mina. Cada recuadro puede tocar un máximo 
 El jugador puede colocar una bandera en una celda para indicar que hay una mina, o seleccionarla
 para descubrir lo que contiene.
 
-  ![](https://img.shields.io/badge/Practica%202-0%25-grey.svg)
+  ![](https://img.shields.io/badge/Practica%202-0%25-lightgray.svg)
