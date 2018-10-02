@@ -19,13 +19,12 @@ El servicio admitirá la siguiente especificación de los paquetes:
 
   ![](https://img.shields.io/badge/Practica%201-0%25-green.svg)
 
-#### Práctica 2. Hundir la flota
+#### Práctica 2. El Buscaminas
 
-La comunicación entre los clientes del juego de hundir la flota se realizará bajo el
-protocolo de transporte ```TCP```. La práctica que se propone consiste en la realización de una
-aplicación cliente/servidor que implemente el juego con las restricciones comentadas
-anteriormente. En el juego considerado los jugadores (los clientes) se conectan al servicio (el
-servidor). Solamente se admitirán partidas con dos jugadores y se admitirá un máximo de 10
-partidas simultáneas.
+Para jugar al buscaminas es necesario una cuadrícula que inicialmente aparece oculta y
+una vez que se selecciona una cuadrícula, indica un número que representa las minas que hay en
+ese contacto con ese recuadro, o una mina. Cada recuadro puede tocar un máximo de 8 minas. 
+El jugador puede colocar una bandera en una celda para indicar que hay una mina, o seleccionarla
+para descubrir lo que contiene.
 
   ![](https://img.shields.io/badge/Practica%202-0%25-red.svg)
