@@ -5,99 +5,75 @@
 #include <netdb.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
+
+int main(){
 
 
-/*
- * El servidor ofrece el servicio de incrementar un n\ufffdmero recibido de un cliente
- */
- 
-int main ()
-{
-	/*---------------------------------------------------- 
-		Descriptor del socket y buffer de datos                
-	-----------------------------------------------------*/
-	int Socket_Servidor;
-	struct sockaddr_in Servidor;
-	int contador = 0;
-	
-	
+     int Socket_Servidor;
+     struct sockaddr_in Servidor;
+     int contador = 0;
+     char formato[80];
+     time_t tiempo;
+     struct tm * stTm;
+     tiempo = time(NULL);
+     stTm = localtime(&tiempo);
 
-	/* -----------------------------------------------------
-   		Informaci\ufffdn del Cliente
-   	-----------------------------------------------------*/
-   	struct sockaddr_in Cliente;
-	socklen_t Longitud_Cliente;
-	
-	
-	/* --------------------------------------------------
-		Se abre el socket Servidor
-	---------------------------------------------------*/
-	Socket_Servidor = socket (AF_INET, SOCK_DGRAM, 0);
-	if (Socket_Servidor == -1)
-	{
-		printf ("No se puede abrir socket servidor\n");
-		exit (-1);	
-	}
+     struct sockaddr_in Cliente;
+     socklen_t Longitud_Cliente;
 
-	/* ------------------------------------------------------------------
-		Se rellenan los campos de la estructura servidor, necesaria
-		para la llamada a la funcion bind().
-	-------------------------------------------------------------------*/
-	Servidor.sin_family = AF_INET;
-	Servidor.sin_port = htons(2000);
-	Servidor.sin_addr.s_addr = htonl(INADDR_ANY); 
+     Socket_Servidor = socket (AF_INET, SOCK_DGRAM, 0);
 
-	if (bind (Socket_Servidor, (struct sockaddr *)&Servidor, sizeof (Servidor)) == -1)
-	{
-		close (Socket_Servidor);
-		exit (-1);
-	}
-	
+     if (Socket_Servidor == -1){
+          printf ("No se puede abrir socket servidor\n");
+          exit (-1);
+     }
 
-  	/*---------------------------------------------------------------------
-		Del cliente s\ufffdlo necesitamos el tama\ufffdo de su estructura, el 
-		resto de informaci\ufffdn (familia, puerto, ip), la obtendremos 
-		nos la proporcionar\ufffd el propio m\ufffdtodo recvfrom, cuando
-		recibamos la llamada de un cliente.
-   ----------------------------------------------------------------------*/
-	Longitud_Cliente = sizeof (Cliente);
+     Servidor.sin_family = AF_INET;
+     Servidor.sin_port = htons(2000);
+     Servidor.sin_addr.s_addr = htonl(INADDR_ANY);
 
-   	
-	/*-----------------------------------------------------------------------
-		El servidor espera continuamente los mensajes de los clientes
-	------------------------------------------------------------------------ */
-	while (1)
-	{
-    /* -----------------------------------------------------------------
-			Esperamos la llamada de alg\ufffdn cliente
-		-------------------------------------------------------------------*/
-      	int recibido = recvfrom (Socket_Servidor, &contador, sizeof(contador), 0,
-			(struct sockaddr *) &Cliente, &Longitud_Cliente);
+     // En caso de acabar el proceso de los socket con Ctrl + C, permitir
+     // reutilizar la direccion
+     int activado = 1;
+     setsockopt(Socket_Servidor, SOL_SOCKET, SO_REUSEADDR, &activado, sizeof(activado));
+
+     if (bind (Socket_Servidor, (struct sockaddr *)&Servidor, sizeof (Servidor)) == -1){
+          close (Socket_Servidor);
+          exit (-1);
+     }
+
+     Longitud_Cliente = sizeof(Cliente);
+
+          int recibido=0;
+
+          if(recibido==0){
 
 
+            recibido = recvfrom (Socket_Servidor, &contador, sizeof(contador), 0,
+            (struct sockaddr *) &Cliente, &Longitud_Cliente);
 
-		/* -----------------------------------------------------------------
-			Comprobamos si hemos recibido alguna informaci\ufffdn 
-		-------------------------------------------------------------------*/
-		if (recibido > 0)
-		{
-			/*-----------------------------------------------------------------
-				Incrementamos el valor que nos ha enviado el cliente 
-				------------------------------------------------------------------*/
-      	printf ("Recibido %d, envio %d\n", contador, contador+1);
-			contador++;
-      
-      	/* ------------------------------------------------------------------
-				Devolvemos el n\ufffdmero incrementado al cliente
-				--------------------------------------------------------------------*/
-			int enviado = sendto (Socket_Servidor, &contador, sizeof(contador), 0,
-			(struct sockaddr *) &Cliente, Longitud_Cliente);
+               if (recibido > 0){
 
-		}
+                    printf("Numero de servicio → %d\n",contador);
 
-    }
-	 
-	 close(Socket_Servidor);
+                    if(contador==1){
+                         strftime(formato,80,"%A, %d de %B de %Y", stTm);
+                    }
+                    if(contador==2){
+                         strftime(formato,80,"%H:%M:%S", stTm);
+                    }
+                    if(contador==3){
+                         strftime(formato,80,"%A, %d de %B de %Y; %H:%M:%S", stTm);
+                    }
 
-	return 0;
-}
+                    int enviado = sendto (Socket_Servidor, &formato, sizeof(formato), 0,
+                    (struct sockaddr *) &Cliente, Longitud_Cliente);
+
+               }
+          }
+
+        close(Socket_Servidor);
+
+       return 0;
+     }
