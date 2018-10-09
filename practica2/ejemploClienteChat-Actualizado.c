@@ -43,7 +43,7 @@ int main ( )
 	-------------------------------------------------------------------*/
 	sockname.sin_family = AF_INET;
 	sockname.sin_port = htons(2000);
-	sockname.sin_addr.s_addr =  inet_addr("127.0.0.1");
+	sockname.sin_addr.s_addr =  inet_addr("172.30.149.112");
 
 	/* ------------------------------------------------------------------
 		Se solicita la conexión con el servidor
